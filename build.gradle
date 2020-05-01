@@ -1,0 +1,16 @@
+plugins {
+    id 'org.jetbrains.kotlin.js' version '1.3.72'
+}
+
+group 'pl.karol202'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
+    implementation "org.jetbrains.kotlinx:kotlinx-html-js:0.7.1"
+}
+
+kotlin.target.browser { }
