@@ -5,14 +5,14 @@ import scene.Scene
 
 class SceneBuilder
 {
-	private val gameObjects = mutableListOf<GameObject>()
+	private var root = GameObject()
 
-	val scene get() = Scene(gameObjects)
+	fun build() = Scene(root)
 
-	fun gameObject(builder: GameObjectBuilder.() -> Unit)
+	fun root(builder: GameObjectBuilder.() -> Unit)
 	{
-		gameObjects += GameObjectBuilder().apply(builder).gameObject
+		root = gameObject(builder)
 	}
 }
 
-fun scene(builder: SceneBuilder.() -> Unit) = SceneBuilder().apply(builder).scene
+fun scene(builder: SceneBuilder.() -> Unit) = SceneBuilder().apply(builder).build()

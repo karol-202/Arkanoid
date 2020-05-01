@@ -2,11 +2,9 @@ package scene
 
 import gameobject.GameObject
 
-data class Scene(private val gameObjects: List<GameObject>)
+data class Scene(private val root: GameObject)
 {
-	fun update(deltaTime: Double) = gameObjects.fold(this) { currentScene, gameObject ->
-		gameObject.update(deltaTime, currentScene)
-	}
+	fun update(deltaTime: Double) = root.update(deltaTime, this)
 
-	fun render() = gameObjects.flatMap { it.render() }
+	fun render() = root.render()
 }

@@ -2,6 +2,7 @@ import assets.loadImage
 import component.ColorBackground
 import component.Position
 import component.Sprite
+import dsl.gameObject
 import dsl.scene
 import kotlinx.html.dom.append
 import kotlinx.html.js.canvas
@@ -19,12 +20,14 @@ fun main()
     val manager = GameManager(context)
 
     val scene = scene {
-        gameObject {
-            + ColorBackground("blue")
-        }
-        gameObject {
-            + Position(100.0, 100.0)
-            + Sprite(loadImage("assets/ball.png"))
+        root {
+            + gameObject {
+                + ColorBackground("blue")
+            }
+            + gameObject {
+                + Position(100.0, 100.0)
+                + Sprite(loadImage("assets/ball.png"))
+            }
         }
     }
     manager.start(scene)
