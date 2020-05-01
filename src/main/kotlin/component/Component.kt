@@ -1,11 +1,12 @@
 package component
 
-import render.RenderOperation
+import gameobject.GameObject
+import render.render
 import scene.Scene
 
 interface Component
 {
-	fun update(deltaTime: Double, scene: Scene) = scene
+	fun update(deltaTime: Double, scene: Scene, gameObject: GameObject) = scene
 
-	fun render(): RenderOperation
+	fun render(gameObject: GameObject) = render {  }
 }
