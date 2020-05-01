@@ -7,8 +7,9 @@ class GameObjectBuilder
 {
 	private val children = mutableListOf<GameObject>()
 	private val components = mutableListOf<Component>()
+	var enabled = true
 
-	fun build() = GameObject(children, components)
+	fun build() = GameObject(children, components, enabled)
 
 	operator fun GameObject.unaryPlus()
 	{

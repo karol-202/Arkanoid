@@ -25,8 +25,14 @@ fun main()
                 + ColorBackground("blue")
             }
             + gameObject {
-                + Position(100.0, 100.0)
-                + Sprite(loadImage("assets/ball.png"))
+                + gameObject {
+                    + Position(100.0, 100.0)
+                    + Sprite(loadImage("assets/ball.png"))
+                }
+                + gameObject {
+                    + Position(300.0, 100.0)
+                    + Sprite(loadImage("assets/ball.png"))
+                }
             }
         }
     }
