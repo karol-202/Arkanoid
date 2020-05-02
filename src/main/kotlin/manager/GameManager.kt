@@ -10,7 +10,7 @@ private const val UPDATE_INTERVAL = 30
 
 class GameManager(private val context: RenderContext)
 {
-	private var state: State = State.Idle
+	private var state: GameState = GameState.Idle
 
 	init
 	{
@@ -19,12 +19,12 @@ class GameManager(private val context: RenderContext)
 
 	fun start(scene: Scene)
 	{
-		state = State.Running(scene, Date.now())
+		state = GameState.Running(scene, Date.now())
 	}
 
 	fun stop()
 	{
-		state = State.Idle
+		state = GameState.Idle
 	}
 
 	private fun run()

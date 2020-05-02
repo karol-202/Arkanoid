@@ -4,12 +4,12 @@ import input.InputEvent
 import scene.Scene
 import update.UpdateContext
 
-sealed class State
+sealed class GameState
 {
 	data class Running(private val scene: Scene,
 	                   private val lastTime: Double,
 	                   private val deltaTime: Double = 0.0,
-	                   private val inputQueue: List<InputEvent> = emptyList()) : State()
+	                   private val inputQueue: List<InputEvent> = emptyList()) : GameState()
 	{
 		override fun run(currentTime: Double): GameRunResult
 		{
@@ -32,7 +32,7 @@ sealed class State
 		override fun handleInput(event: InputEvent) = copy(inputQueue = inputQueue + event)
 	}
 
-	object Idle : State()
+	object Idle : GameState()
 	{
 		override fun run(currentTime: Double) = GameRunResult(this)
 
@@ -41,5 +41,5 @@ sealed class State
 
 	abstract fun run(currentTime: Double): GameRunResult
 
-	abstract fun handleInput(event: InputEvent): State
+	abstract fun handleInput(event: InputEvent): GameState
 }

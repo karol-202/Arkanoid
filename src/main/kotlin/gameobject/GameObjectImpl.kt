@@ -3,25 +3,26 @@ package gameobject
 import component.Component
 import render.RenderOperation
 import scene.Scene
+import update.UpdateContext
 import util.replaced
 import kotlin.reflect.KClass
 
-data class GameObjectImpl(private val children: List<GameObject>,
+data class GameObjectImpl(override val children: List<GameObject>,
                           private val components: Map<KClass<out Component>, Component>,
                           private val enabled: Boolean) : GameObject
 {
-	override fun update(deltaTime: Double, parentNode: ParentNode) =
-			if(enabled) updateSelf(deltaTime, parentNode).updateChildren(deltaTime, parentNode)
+	override fun update(parentNode: ParentNode, updateContext: UpdateContext) =
+			if(enabled) updateSelf(parentNode, updateContext).updateChildren(parentNode, updateContext)
 			else this
 
-	private fun GameObject.updateSelf(deltaTime: Double, parentNode: ParentNode) =
+	private fun GameObject.updateSelf(parentNode: ParentNode, updateContext: UpdateContext) =
 			components.values.fold(this) { currentObject, component ->
-				component.update(deltaTime, currentObject.asParentNode(parentNode))
+				component.update(currentObject.asParentNode(parentNode), updateContext)
 			}
 
-	private fun GameObject.updateChildren(deltaTime: Double, parentNode: ParentNode) =
+	private fun GameObject.updateChildren(parentNode: ParentNode, updateContext: UpdateContext) =
 			children.fold(this) { currentObject, child ->
-				val newChild = child.update(deltaTime, currentObject.asParentNode(parentNode))
+				val newChild = child.update(currentObject.asParentNode(parentNode), updateContext)
 				currentObject.withChildReplaced(child, newChild)
 			}
 
@@ -37,6 +38,11 @@ data class GameObjectImpl(private val children: List<GameObject>,
 
 	override fun withChildReplaced(oldChild: GameObject, newChild: GameObject) =
 			copy(children = children.replaced(oldChild, newChild))
+
+	override fun withComponentReplaced(newComponent: Component) =
+			copy(components = components.mapValues { (type, oldComponent) ->
+				if(type == newComponent::class) newComponent else oldComponent
+			})
 }
 
 private fun GameObject.asParentNode(parent: ParentNode) = ParentNode.GameObjectNode(this, parent)
