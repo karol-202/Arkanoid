@@ -3,10 +3,11 @@ package component
 import gameobject.GameObject
 import gameobject.ParentNode
 import render.RenderContext
+import update.UpdateContext
 
 interface Component
 {
-	fun update(deltaTime: Double, ownerNode: ParentNode.GameObjectNode) = update(ownerNode) { owner }
+	fun update(ownerNode: ParentNode.GameObjectNode, updateContext: UpdateContext) = update(ownerNode) { owner }
 
 	fun render(ownerNode: ParentNode.GameObjectNode) = render(ownerNode) { }
 }

@@ -1,5 +1,6 @@
 package manager
 
+import input.InputEvent
 import render.RenderContext
 import scene.Scene
 import kotlin.browser.window
@@ -32,4 +33,6 @@ class GameManager(private val context: RenderContext)
 		state = result.state
 		result.renderOperations.forEach { it(context) }
 	}
+
+	fun handleInput(event: InputEvent) = state.handleInput(event)
 }

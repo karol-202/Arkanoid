@@ -2,6 +2,7 @@ package gameobject
 
 import component.Component
 import render.RenderOperation
+import update.UpdateContext
 import kotlin.reflect.KClass
 
 interface GameObject
@@ -14,7 +15,7 @@ interface GameObject
 				GameObjectImpl(children, components.associateBy { it::class }, enabled)
 	}
 
-	fun update(deltaTime: Double, parentNode: ParentNode): GameObject
+	fun update(parentNode: ParentNode, updateContext: UpdateContext): GameObject
 
 	fun render(parentNode: ParentNode): List<RenderOperation>
 
