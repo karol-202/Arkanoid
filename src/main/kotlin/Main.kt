@@ -25,6 +25,7 @@ fun main()
                 + ColorBackground("blue")
             }
             + gameObject {
+                + Position(y = 200.0)
                 + gameObject {
                     + Position(100.0, 100.0)
                     + Sprite(loadImage("assets/ball.png"))

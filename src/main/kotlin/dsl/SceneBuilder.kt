@@ -5,7 +5,7 @@ import scene.Scene
 
 class SceneBuilder
 {
-	private var root = GameObject()
+	private var root = GameObject.create()
 
 	fun build() = Scene(root)
 
