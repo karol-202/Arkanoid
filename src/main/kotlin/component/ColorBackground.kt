@@ -1,15 +1,13 @@
 package component
 
-import gameobject.GameObject
-import render.render
+import gameobject.ParentNode
 import render.height
 import render.width
-import scene.Scene
 
 data class ColorBackground(private val color: String) : Component
 {
-	override fun render(gameObject: GameObject) = render {
-		fillStyle = color
-		fillRect(0.0, 0.0, width, height)
+	override fun render(ownerNode: ParentNode.GameObjectNode) = render(ownerNode) { context ->
+		context.fillStyle = color
+		context.fillRect(0.0, 0.0, context.width, context.height)
 	}
 }

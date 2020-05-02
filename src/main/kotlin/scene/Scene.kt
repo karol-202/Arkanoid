@@ -1,10 +1,13 @@
 package scene
 
 import gameobject.GameObject
+import gameobject.ParentNode
 
 data class Scene(private val root: GameObject)
 {
-	fun update(deltaTime: Double) = root.update(deltaTime, this)
+	private val sceneNode = ParentNode.SceneNode(this)
 
-	fun render() = root.render()
+	fun update(deltaTime: Double) = root.update(deltaTime, sceneNode)
+
+	fun render() = root.render(sceneNode)
 }

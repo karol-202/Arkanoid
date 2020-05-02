@@ -2,6 +2,7 @@ package dsl
 
 import component.Component
 import gameobject.GameObject
+import gameobject.GameObjectImpl
 
 class GameObjectBuilder
 {
@@ -9,7 +10,7 @@ class GameObjectBuilder
 	private val components = mutableListOf<Component>()
 	var enabled = true
 
-	fun build() = GameObject(children, components, enabled)
+	fun build() = GameObject.create(children, components, enabled)
 
 	operator fun GameObject.unaryPlus()
 	{

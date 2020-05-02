@@ -1,14 +1,13 @@
 package component
 
-import gameobject.GameObject
+import gameobject.ParentNode
 import gameobject.requireComponent
 import org.w3c.dom.CanvasImageSource
-import render.render
 
 data class Sprite(private val image: CanvasImageSource) : Component
 {
-	override fun render(gameObject: GameObject) = render {
-		val position = gameObject.requireComponent<Position>()
-		drawImage(image, position.x, position.y)
+	override fun render(ownerNode: ParentNode.GameObjectNode) = render(ownerNode) { context ->
+		val position = ownerNode.gameObject.requireComponent<Position>()
+		context.drawImage(image, position.x, position.y)
 	}
 }
