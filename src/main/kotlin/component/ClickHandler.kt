@@ -1,7 +1,6 @@
 package component
 
 import gameobject.ParentNode
-import gameobject.requireComponent
 import input.InputEvent
 import state.State
 import state.StateChange

@@ -2,7 +2,6 @@ package component
 
 import gameobject.GameObject
 import gameobject.ParentNode
-import gameobject.getComponent
 import state.State
 import state.StateChange
 import update.UpdateContext
@@ -50,3 +49,5 @@ fun <S : State> getState(node: ParentNode): S? = when(node)
 		node.gameObject.getComponent<StateManager<S>>()?.state ?: getState(node.parentNode)
 	is ParentNode.SceneNode -> null
 }
+
+fun <S : State> requireState(node: ParentNode) = getState<S>(node) ?: throw IllegalStateException("No state found")

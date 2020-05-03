@@ -17,11 +17,11 @@ private val canvas = document.body!!.append.canvas { }
 private val context = canvas.context2d
 private val gameManager = GameManager(context)
 
-object MyState : State
+data class MyState(val showBall: Boolean = true) : State
 
 val scene1 = scene {
     root {
-        + StateManager(MyState)
+        + StateManager(MyState())
         + gameObject {
             + ColorBackground("black")
         }
@@ -31,13 +31,14 @@ val scene1 = scene {
                 + Position(100.0, 100.0)
                 + Sprite(loadImage("assets/ball.png"))
                 + StatePublisher<MyState>()
-                + ClickHandler<MyState>(size = Vector(100.0, 100.0)) { println("click 1"); this }
+                + ClickHandler<MyState>(size = Vector(100.0, 100.0)) { copy(showBall = !showBall) }
             }
             + gameObject {
-                + Position(300.0, 100.0)
-                + Sprite(loadImage("assets/ball.png"))
-                + StatePublisher<MyState>()
-                + ClickHandler<MyState>(size = Vector(100.0, 100.0)) { println("click 2"); this }
+                + ConditionalChildrenEnable<MyState> { showBall }
+                + gameObject {
+                    + Position(300.0, 100.0)
+                    + Sprite(loadImage("assets/ball.png"))
+                }
             }
         }
     }

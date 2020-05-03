@@ -25,9 +25,10 @@ interface GameObject : ComponentProvider
 	fun withChildReplaced(oldChild: GameObject, newChild: GameObject): GameObject
 
 	fun withComponentReplaced(newComponent: Component): GameObject
+
+	fun enabled(enabled: Boolean): GameObject
 }
 
-inline fun <reified C : Component> ComponentProvider.getComponent() = getComponent(C::class) as C?
-
-inline fun <reified C : Component> ComponentProvider.requireComponent() =
-		getComponent<C>() ?: throw IllegalStateException("No component: ${C::class.simpleName}")
+fun GameObject.withChildrenMapped(map: (GameObject) -> GameObject) = children.fold(this) { currentObject, child ->
+	currentObject.withChildReplaced(child, map(child))
+}

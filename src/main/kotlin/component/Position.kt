@@ -1,8 +1,6 @@
 package component
 
 import gameobject.ParentNode
-import gameobject.getComponent
-import gameobject.requireComponent
 import util.Vector
 
 data class Position(val local: Vector) : Component

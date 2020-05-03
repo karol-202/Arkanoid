@@ -43,6 +43,8 @@ data class GameObjectImpl(override val children: List<GameObject>,
 			copy(components = components.mapValues { (type, oldComponent) ->
 				if(type == newComponent::class) newComponent else oldComponent
 			})
+
+	override fun enabled(enabled: Boolean) = copy(enabled = enabled)
 }
 
 private fun GameObject.asParentNode(parent: ParentNode) = ParentNode.GameObjectNode(this, parent)
