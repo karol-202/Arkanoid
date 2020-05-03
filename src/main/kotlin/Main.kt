@@ -1,7 +1,7 @@
 import assets.loadImage
 import component.*
-import dsl.gameObject
-import dsl.scene
+import gameobject.gameObject
+import scene.scene
 import input.InputEvent
 import kotlinx.html.dom.append
 import kotlinx.html.js.canvas

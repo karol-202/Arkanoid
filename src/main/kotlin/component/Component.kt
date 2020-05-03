@@ -13,6 +13,8 @@ interface Component
 	fun render(ownerNode: ParentNode.GameObjectNode) = render(ownerNode) { }
 }
 
+private class UpdateInterruptException : Exception()
+
 class ComponentContext(private val ownerNode: ParentNode.GameObjectNode) : ComponentProvider
 {
 	val scene get() = ownerNode.scene
@@ -20,12 +22,18 @@ class ComponentContext(private val ownerNode: ParentNode.GameObjectNode) : Compo
 	val parentNode get() = ownerNode.parentNode
 
 	override fun getComponent(type: KClass<out Component>) = owner.getComponent(type)
+
+	fun dontUpdate(): Nothing = throw UpdateInterruptException()
 }
 
 private val ParentNode.GameObjectNode.componentContext get() = ComponentContext(this)
 
 fun update(ownerNode: ParentNode.GameObjectNode, update: ComponentContext.() -> GameObject) =
-		ownerNode.componentContext.update()
+		try { ownerNode.componentContext.update() }
+		catch(e: UpdateInterruptException) { ownerNode.gameObject }
 
 fun render(ownerNode: ParentNode.GameObjectNode, render: ComponentContext.(RenderContext) -> Unit) =
-		{ context: RenderContext -> ownerNode.componentContext.render(context) }
+		{ context: RenderContext ->
+			try { ownerNode.componentContext.render(context) }
+			catch(e: UpdateInterruptException) { }
+		}

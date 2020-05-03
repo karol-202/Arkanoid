@@ -1,7 +1,8 @@
-package dsl
+package scene
 
 import gameobject.GameObject
-import scene.Scene
+import gameobject.GameObjectBuilder
+import gameobject.gameObject
 
 class SceneBuilder
 {

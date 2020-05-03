@@ -1,8 +1,6 @@
-package dsl
+package gameobject
 
 import component.Component
-import gameobject.GameObject
-import gameobject.GameObjectImpl
 
 class GameObjectBuilder
 {

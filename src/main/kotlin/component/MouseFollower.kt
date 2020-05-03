@@ -11,8 +11,8 @@ data class MouseFollower(private val lockX: Boolean = false,
 	override fun update(ownerNode: ParentNode.GameObjectNode, updateContext: UpdateContext) = update(ownerNode) {
 		val position = requireComponent<Position>()
 
+		val targetGlobal = findMoveLocation(updateContext.inputEvents) ?: dontUpdate()
 		val parentGlobal = getGlobalPosition(parentNode)
-		val targetGlobal = findMoveLocation(updateContext.inputEvents)
 		val targetLocal = targetGlobal - parentGlobal
 		val resultLocal = lockPosition(position.local, targetLocal)
 
@@ -20,7 +20,7 @@ data class MouseFollower(private val lockX: Boolean = false,
 	}
 
 	private fun findMoveLocation(events: List<InputEvent>) =
-			events.mapNotNull { it as? InputEvent.Mouse.Move }.last().location
+			events.mapNotNull { it as? InputEvent.Mouse.Move }.lastOrNull()?.location
 
 	private fun lockPosition(current: Vector, target: Vector) = Vector(x = if(lockX) current.x else target.x,
 	                                                                   y = if(lockY) current.y else target.y)
