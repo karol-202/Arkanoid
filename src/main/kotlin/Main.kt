@@ -38,6 +38,7 @@ val scene1 = scene {
                 + gameObject {
                     + Position(300.0, 100.0)
                     + Sprite(loadImage("assets/ball.png"))
+                    + MouseFollower(lockY = true)
                 }
             }
         }
