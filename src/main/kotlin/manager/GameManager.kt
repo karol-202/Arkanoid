@@ -17,22 +17,21 @@ class GameManager(private val context: RenderContext)
 		window.setInterval(this::run, UPDATE_INTERVAL)
 	}
 
-	fun start(scene: Scene)
-	{
-		state = GameState.Running(scene, Date.now())
-	}
+	fun start(scene: Scene) = setState(GameState.Running(scene, Date.now()))
 
-	fun stop()
-	{
-		state = GameState.Idle
-	}
+	fun stop() = setState(GameState.Idle)
 
 	private fun run()
 	{
 		val result = state.run(Date.now())
-		state = result.state
+		setState(result.state)
 		result.renderOperations.forEach { it(context) }
 	}
 
-	fun handleInput(event: InputEvent) = state.handleInput(event)
+	fun handleInput(event: InputEvent) = setState(state.handleInput(event))
+
+	private fun setState(state: GameState)
+	{
+		this.state = state
+	}
 }

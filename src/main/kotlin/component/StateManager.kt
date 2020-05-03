@@ -4,6 +4,7 @@ import gameobject.GameObject
 import gameobject.ParentNode
 import gameobject.getComponent
 import state.State
+import state.StateChange
 import update.UpdateContext
 
 data class StateManager<S : State>(val state: S) : Component
@@ -16,20 +17,21 @@ data class StateManager<S : State>(val state: S) : Component
 		currentState.change()
 	}
 
-	private fun findStateChanges(owner: GameObject) = findPublishers(owner).flatMap { it.stateChanges }
+	private fun findStateChanges(owner: GameObject) =
+			findPublishers(owner).flatMap { it.getChangesWithClearedPublisher().stateChanges /* TODO Clear publisher */ }
 
 	private fun findPublishers(gameObject: GameObject): List<StatePublisher<S>> =
 			listOfNotNull(gameObject.getComponent<StatePublisher<S>>()) + findPublishersInChildren(gameObject)
 
 	private fun findPublishersInChildren(gameObject: GameObject) =
-			gameObject.children.flatMap { findPublishers(gameObject) }
+			gameObject.children.flatMap { findPublishers(it) }
 
 	private fun withUpdatedState(state: S) = copy(state = state)
 }
 
-fun <S : State> getState(ownerNode: ParentNode): S? = when(ownerNode)
+fun <S : State> getState(node: ParentNode): S? = when(node)
 {
 	is ParentNode.GameObjectNode ->
-		ownerNode.gameObject.getComponent<StateManager<S>>()?.state ?: getState(ownerNode.parentNode)
+		node.gameObject.getComponent<StateManager<S>>()?.state ?: getState(node.parentNode)
 	is ParentNode.SceneNode -> null
 }

@@ -1,11 +1,12 @@
 package gameobject
 
 import component.Component
+import component.ComponentProvider
 import render.RenderOperation
 import update.UpdateContext
 import kotlin.reflect.KClass
 
-interface GameObject
+interface GameObject : ComponentProvider
 {
 	companion object
 	{
@@ -21,13 +22,12 @@ interface GameObject
 
 	fun render(parentNode: ParentNode): List<RenderOperation>
 
-	fun getComponent(type: KClass<out Component>): Component?
-
 	fun withChildReplaced(oldChild: GameObject, newChild: GameObject): GameObject
 
 	fun withComponentReplaced(newComponent: Component): GameObject
 }
 
-inline fun <reified C : Component> GameObject.getComponent() = getComponent(C::class) as C?
+inline fun <reified C : Component> ComponentProvider.getComponent() = getComponent(C::class) as C?
 
-inline fun <reified C : Component> GameObject.requireComponent() = getComponent<C>() ?: throw IllegalStateException()
+inline fun <reified C : Component> ComponentProvider.requireComponent() =
+		getComponent<C>() ?: throw IllegalStateException("No component: ${C::class.simpleName}")

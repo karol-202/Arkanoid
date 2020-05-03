@@ -2,6 +2,7 @@ package component
 
 import gameobject.ParentNode
 import gameobject.getComponent
+import gameobject.requireComponent
 import util.Vector
 
 data class Position(val local: Vector) : Component
@@ -17,3 +18,6 @@ data class Position(val local: Vector) : Component
 		is ParentNode.SceneNode -> Vector.ZERO
 	}
 }
+
+fun getGlobalPosition(ownerNode: ParentNode.GameObjectNode) =
+		ownerNode.gameObject.requireComponent<Position>().calculateGlobal(ownerNode.parentNode)

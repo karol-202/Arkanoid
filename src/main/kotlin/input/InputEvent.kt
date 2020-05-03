@@ -1,20 +1,17 @@
 package input
 
 import org.w3c.dom.events.MouseEvent
+import util.Vector
 
 sealed class InputEvent
 {
-	abstract class Mouse(val x: Double,
-	                     val y: Double) : InputEvent()
+	abstract class Mouse(val location: Vector) : InputEvent()
 	{
-		class Down(x: Double,
-		           y: Double) : Mouse(x, y)
+		class Down(location: Vector) : Mouse(location)
 
-		class Move(x: Double,
-		           y: Double) : Mouse(x, y)
+		class Move(location: Vector) : Mouse(location)
 
-		class Up(x: Double,
-		         y: Double) : Mouse(x, y)
+		class Up(location: Vector) : Mouse(location)
 	}
 
 	companion object
@@ -25,10 +22,12 @@ sealed class InputEvent
 
 		fun from(mouseEvent: MouseEvent) = when(mouseEvent.type)
 		{
-			TYPE_MOUSE_DOWN -> Mouse.Down(mouseEvent.x, mouseEvent.y)
-			TYPE_MOUSE_MOVE -> Mouse.Move(mouseEvent.x, mouseEvent.y)
-			TYPE_MOUSE_UP -> Mouse.Up(mouseEvent.x, mouseEvent.y)
+			TYPE_MOUSE_DOWN -> Mouse.Down(mouseEvent.location)
+			TYPE_MOUSE_MOVE -> Mouse.Move(mouseEvent.location)
+			TYPE_MOUSE_UP -> Mouse.Up(mouseEvent.location)
 			else -> throw IllegalArgumentException("Unknown event type: ${mouseEvent.type}")
 		}
+
+		private val MouseEvent.location get() = Vector(x, y)
 	}
 }

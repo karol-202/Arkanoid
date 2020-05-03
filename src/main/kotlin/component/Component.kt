@@ -4,6 +4,7 @@ import gameobject.GameObject
 import gameobject.ParentNode
 import render.RenderContext
 import update.UpdateContext
+import kotlin.reflect.KClass
 
 interface Component
 {
@@ -12,11 +13,13 @@ interface Component
 	fun render(ownerNode: ParentNode.GameObjectNode) = render(ownerNode) { }
 }
 
-class ComponentContext(private val ownerNode: ParentNode.GameObjectNode)
+class ComponentContext(private val ownerNode: ParentNode.GameObjectNode) : ComponentProvider
 {
 	val scene get() = ownerNode.scene
 	val owner get() = ownerNode.gameObject
 	val parentNode get() = ownerNode.parentNode
+
+	override fun getComponent(type: KClass<out Component>) = owner.getComponent(type)
 }
 
 private val ParentNode.GameObjectNode.componentContext get() = ComponentContext(this)

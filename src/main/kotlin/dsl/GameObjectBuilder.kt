@@ -14,7 +14,7 @@ class GameObjectBuilder
 
 	operator fun GameObject.unaryPlus()
 	{
-		children += this
+		this@GameObjectBuilder.children += this
 	}
 
 	operator fun Component.unaryPlus()
