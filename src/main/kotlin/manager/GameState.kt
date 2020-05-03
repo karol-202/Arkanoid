@@ -23,9 +23,14 @@ sealed class GameState
 
 		private fun updated() = copy(scene = sceneUpdated(), inputQueue = emptyList())
 
-		private fun sceneUpdated() = scene.update(createUpdateContext())
+		private fun sceneUpdated() = sceneUpdated(scene.update(createFirstUpdateContext()))
 
-		private fun createUpdateContext() = UpdateContext(deltaTime, inputQueue)
+		private fun sceneUpdated(previous: Scene): Scene =
+				previous.update(createNextUpdateContext()).let { if(it == previous) it else sceneUpdated(it) }
+
+		private fun createFirstUpdateContext() = UpdateContext(deltaTime, inputQueue)
+
+		private fun createNextUpdateContext() = UpdateContext(0.0, emptyList())
 
 		private fun render() = scene.render()
 

@@ -6,7 +6,7 @@ import scene.Scene
 import kotlin.browser.window
 import kotlin.js.Date
 
-private const val UPDATE_INTERVAL = 30
+private const val UPDATE_INTERVAL = 20
 
 class GameManager(private val context: RenderContext)
 {
